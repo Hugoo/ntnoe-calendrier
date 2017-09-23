@@ -3,7 +3,6 @@ import urllib2
 import time
 import random
 import datetime
-from bs4 import BeautifulSoup
 from lxml import html
 
 
