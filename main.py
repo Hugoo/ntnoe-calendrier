@@ -14,7 +14,7 @@ HEADERS = [('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) '
 			'Safari/537.36')]
 
 
-def generate_datetime(year, weekNumber, day, hour):
+def generate_datetime(year, week_number, day, hour):
 	# day is Lun or Mar or...
 	# year is YYYY
 	# hour is : HH:mm
@@ -96,11 +96,9 @@ def init_headers():
 
 	if os.path.exists('.token'):
 		f = open('.token')
-		lines = [l.replace('\n', '') for l in f][0]
+		t = f.readline().replace('\n', '')
 		f.close()
-
-		if lines and lines[0]:
-			authorization_header = 'Basic {}'.format(lines[0])
+		token = 'Basic {}'.format(t)
 
 	HEADERS.append(('Authorization', token))
 
