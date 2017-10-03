@@ -54,13 +54,13 @@ def getDataFromEventNode(event):
 	try:
 		cours = cours_liste[0]
 	except:
+		cours = ''
 		print("pas de cours trouve")
-		pass
 
 	try:
 		cours += ' ' + cours_liste[1]
 	except:
-		pass
+		cours += ''
 
 	try:
 		prof = cours_liste[2]
