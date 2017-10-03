@@ -9,6 +9,9 @@ from lxml import html
 
 
 dayToInt = {'Lun': 1, 'Mar': 2, 'Mer': 3, 'Jeu': 4, 'Ven': 5, 'Sam': 6, 'Dim': 0}
+HEADERS = [('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) '
+			'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 '
+			'Safari/537.36')]
 
 
 def generate_datetime(year, weekNumber, day, hour):
@@ -77,8 +80,7 @@ def getHTMLTreeForYearWeek(year, week, LOCAL):
 		print("Getting remote HTML for Y: {} W: {}".format(str(year), str(week)))
 
 		opener = urllib2.build_opener()
-		opener.addheaders = [('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'),
-						 ('Authorization', 'Basic XXXXXXXXXX')]
+		opener.addheaders = HEADERS
 		values = dict(Semaine=str(week), Annee=str(year), Sequence='3ASIR')
 		data = urllib.urlencode(values)
 		url = 'https://ntnoe.metz.supelec.fr/cgi-bin/agenda/AffEdTEleves.php?Semaine='+str(week)+'&Annee='+str(year)+'&Sequence=3ASIR&Concerne='
@@ -86,6 +88,21 @@ def getHTMLTreeForYearWeek(year, week, LOCAL):
 		content = response.read()
 
 	return html.fromstring(unicode(content, 'iso-8859-15'))
+
+
+def init_headers():
+
+	token = 'Basic XXXXXXXXX'
+
+	if os.path.exists('.token'):
+		f = open('.token')
+		lines = [l.replace('\n', '') for l in f][0]
+		f.close()
+
+		if lines and lines[0]:
+			authorization_header = 'Basic {}'.format(lines[0])
+
+	HEADERS.append(('Authorization', token))
 
 
 def main():
@@ -119,4 +136,5 @@ def main():
 
 
 if __name__ == '__main__':
+	init_headers()
 	main()
