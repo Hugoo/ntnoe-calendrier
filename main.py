@@ -126,8 +126,6 @@ def main():
 			c = years[0], week
 			couples.append(c)
 
-	print(couples)
-
 	for c in couples:
 		year, week = c
 
@@ -135,17 +133,20 @@ def main():
 
 		for event in tree.xpath('//div[@id[starts-with(.,"RV")]]'):
 
-			jour, heure_debut, heure_fin, cours, prof = getDataFromEventNode(event)
+			try:
+				jour, heure_debut, heure_fin, cours, prof = getDataFromEventNode(event)
 
-			debut = generate_datetime(year, week, jour, heure_debut)
-			fin = generate_datetime(year, week, jour, heure_fin)
+				debut = generate_datetime(year, week, jour, heure_debut)
+				fin = generate_datetime(year, week, jour, heure_fin)
 
-			print(cours)
-			print(prof)
-			print("{} - {}".format(heure_debut, heure_fin))
-			print('')
+				print(cours)
+				print(prof)
+				print("{} - {}".format(heure_debut, heure_fin))
+				print('')
 
-			write_event(calendar_file, cours.encode('utf-8'), debut, fin, prof.encode('utf-8'))
+				write_event(calendar_file, cours.encode('utf-8'), debut, fin, prof.encode('utf-8'))
+			except Exception as e:
+				print('An exception occurred : ', e)
 
 		time.sleep(random.randint(1, 5))
 
