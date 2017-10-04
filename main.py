@@ -108,8 +108,28 @@ def main():
 	calendar_file = open("calendar.ical", "w")
 	write_calendar_header(calendar_file)
 
-	year = 2018
-	for week in range(1,14):
+	year, week_number, _ = datetime.datetime.now().isocalendar()
+	years = [year]
+	if week_number > 21:
+		years.append(year + 1)
+
+	couples = []
+	if len(years) == 2:
+		for week in range(week_number, 53):
+			c = years[0], week
+			couples.append(c)
+		for week in range(1, 14):
+			c = years[1], week
+			couples.append(c)
+	else:
+		for week in range(week_number, 14):
+			c = years[0], week
+			couples.append(c)
+
+	print(couples)
+
+	for c in couples:
+		year, week = c
 
 		tree = getHTMLTreeForYearWeek(year, week, LOCAL=False)
 
